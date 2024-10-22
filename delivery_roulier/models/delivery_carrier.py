@@ -44,10 +44,11 @@ class DeliveryCarrier(models.Model):
         res = super().rate_shipment(order)
         # for roulier carrier, usually getting the price by carrier webservice
         # is usually not available for now. Avoid failure in that case.
-        if not res and self.is_roulier():
+        if not res and self._is_roulier():
             res = {
                 "success": True,
                 "price": 0.0,
+                "carrier_price": 0.0,
                 "error_message": False,
                 "warning_message": False,
             }
