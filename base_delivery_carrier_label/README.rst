@@ -99,6 +99,7 @@ Contributors
 -  Timothée Ringeard <timothee.ringeard@camptocamp.com>
 -  Pimolnat Suntian <pimolnats@ecosoft.co.th>
 -  Maksym Yankin <maksym.yankin@camptocamp.com>
+-  Italo Lopes <italo.lopes@camptocamp.com>
 -  `Binhex <https://binhex.cloud//com>`__:
 
    -  David Luis Mora <d.luis@binhex.cloud>

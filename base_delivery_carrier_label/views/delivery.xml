@@ -25,11 +25,11 @@
         >delivery_base.delivery_carrier_template_option.view_tree</field>
         <field name="model">delivery.carrier.template.option</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="partner_id" />
                 <field name="code" readonly="True" />
                 <field name="name" readonly="True" />
-            </tree>
+            </list>
         </field>
     </record>
     <!-- VIEW FOR THE OBJECT : delivery_carrier_option -->
@@ -57,14 +57,14 @@
     <record id="delivery_carrier_option_view_tree" model="ir.ui.view">
         <field name="name">delivery_base.delivery_carrier_option.view_tree</field>
         <field name="model">delivery.carrier.option</field>
-        <field name="type">tree</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="not active">
+            <list decoration-muted="not active">
                 <field name="active" />
                 <field name="mandatory" />
                 <field name="tmpl_option_id" />
                 <field name="code" />
-            </tree>
+            </list>
         </field>
     </record>
     <!-- INHERITED VIEW FOR THE OBJECT : delivery.carrier -->
