@@ -1,0 +1,1 @@
+odoo-addon-delivery_carrier_info @ git+https://github.com/OCA/delivery-carrier.git@refs/pull/936/head#subdirectory=delivery_carrier_info
