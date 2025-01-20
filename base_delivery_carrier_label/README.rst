@@ -103,6 +103,8 @@ Contributors
 
    -  David Luis Mora <d.luis@binhex.cloud>
 
+-  Italo Lopes <italo.lopes@camptocamp.com>
+
 Maintainers
 -----------
 

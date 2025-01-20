@@ -10,3 +10,4 @@
 - Maksym Yankin \<<maksym.yankin@camptocamp.com>\>
 - [Binhex](https://binhex.cloud//com):
   - David Luis Mora \<<d.luis@binhex.cloud>\>
+- Italo Lopes \<<italo.lopes@camptocamp.com>\>
