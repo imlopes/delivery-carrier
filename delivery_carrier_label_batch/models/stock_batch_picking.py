@@ -12,11 +12,9 @@ class StockBatchPicking(models.Model):
 
     _inherit = "stock.picking.batch"
 
-    carrier_id = fields.Many2one(
-        "delivery.carrier", "Carrier", states={"done": [("readonly", True)]}
-    )
-    option_ids = fields.Many2many("delivery.carrier.option", string="Options")
-
+    carrier_id = fields.Many2one("delivery.carrier", "Carrier")
+    option_ids = fields.Many2many("delivery.carrier.option", string="Options", compute="_compute_carrier",
+                                  store=True, readonly=False)
     def action_set_options(self):
         """Apply options to picking of the batch
 
@@ -35,20 +33,22 @@ class StockBatchPicking(models.Model):
         options = carrier.available_option_ids
         return options.filtered(lambda rec: rec.mandatory or rec.by_default)
 
-    @api.onchange("carrier_id")
-    def carrier_id_change(self):
-        """Inherit this method in your module"""
+    @api.onchange('carrier_id')
+    def _onchange_carrier(self):
         if self.carrier_id:
             available_options = self.carrier_id.available_option_ids
-            default_options = self._get_options_to_add()
-            self.option_ids = [(6, 0, default_options.ids)]
-            self.carrier_code = self.carrier_id.code
-            return {
-                "domain": {
-                    "option_ids": [("id", "in", available_options.ids)],
-                }
-            }
-        return {}
+            domain = [("id", "in", available_options.ids)]
+        else:
+            domain = []
+        return {'domain': {'option_ids': domain}}
+
+    @api.depends("carrier_id")
+    def _compute_carrier(self):
+        for batch in self:
+            if batch.carrier_id:
+                default_options = batch._get_options_to_add()
+                batch.option_ids = [(6, 0, default_options.ids)]
+                batch._onchange_carrier()
 
     @api.onchange("option_ids")
     def option_ids_change(self):
@@ -58,15 +58,14 @@ class StockBatchPicking(models.Model):
         for available_option in self.carrier_id.available_option_ids:
             if available_option.mandatory and available_option not in self.option_ids:
                 res["warning"] = {
-                    "title": _("User Error !"),
+                    "title": _("User Error!"),
                     "message": _(
                         "You can not remove a mandatory option."
                         "\nPlease reset options to default."
                     ),
                 }
-                # Due to https://github.com/odoo/odoo/issues/2693 we cannot
                 # reset options
-                # self.option_ids = self._get_options_to_add()
+                self.option_ids = self._get_options_to_add()
         return res
 
     def _values_with_carrier_options(self, values):
@@ -111,11 +110,6 @@ class StockBatchPicking(models.Model):
             packs = move_lines.result_package_id.filtered(lambda p: p.parcel_tracking)
             if packs:
                 packs.write({"parcel_tracking": False})
-            pickings = self.env["stock.picking"].search(
-                [
-                    ("move_line_ids", "in", move_lines.ids),
-                    ("carrier_tracking_ref", "!=", False),
-                ]
-            )
+            pickings = self.env["stock.picking"].search([("move_line_ids", "in", move_lines.ids), ("carrier_tracking_ref", "!=", False)])
             if pickings:
                 pickings.write({"carrier_tracking_ref": False})

@@ -2,12 +2,18 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 {
     "name": "Carrier labels - Stock Batch Picking (link)",
-    "version": "14.0.1.1.1",
+    "version": "18.0.1.1.1",
     "author": "Camptocamp,Odoo Community Association (OCA)",
     "maintainer": "Camptocamp",
     "category": "Carrier",
     "complexity": "normal",
-    "depends": ["base_delivery_carrier_label", "stock_picking_batch_extended"],
+    "depends": [
+        # "base_delivery_carrier_label",
+        "delivery_carrier_option",
+        "delivery_carrier_package_info",
+        # OCA/stock-logistics-workflow
+        "stock_picking_batch_extended"
+    ],
     "website": "https://github.com/OCA/delivery-carrier",
     "data": [
         "data/ir.config_parameter.xml",
